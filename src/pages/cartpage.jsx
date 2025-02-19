@@ -1,6 +1,8 @@
 import React from "react";
 import { useCart } from "../context/cartcontext";
-const CartPage = ({ cartItems }) => {
+const CartPage = () => {
+    const { cartItems } = useCart();
+
     return (
         <div>
             <h1>Your Cart</h1>
