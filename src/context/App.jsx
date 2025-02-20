@@ -8,92 +8,107 @@ import CartProvider from "./cartcontext";
 import LimitedTimeCollectionPage from '../pages/limitedtimecollection';
 import ShippingReturnsPage from '../pages/shippingandreturns';
 import AboutUsPage from '../pages/aboutus';
+import spikedHeart from '../assets/spiked-heart-t.jpg';
+import alienBoy from '../assets/alien-boy-black-.jpg';
+import nardintergal from '../assets/NARD-INTERGAL-WHITE-TEE.jpg';
+import nardflame from '../assets/NARD-FLAME-PROTO-6.png';
+import sunshine from '../assets/sumshine-black.jpg';
+
 
 
 function App() {
   const [limitedTimeProducts, setLimitedTimeProducts] = useState([
-    { id: 1, name: 'Limited Product 1', price: 20, description: 'Description for Limited Product 1', image: 'path/to/image1.jpg' },
-    { id: 2, name: 'Limited Product 2', price: 30, description: 'Description for Limited Product 2', image: 'path/to/image2.jpg' },
+    {
+      id: 1,
+      name: 'Limited Edition Flame Tee',
+      price: 39.99,
+      description: 'Exclusive NARD flame design, available for a limited time only',
+      image: nardflame
+    },
+    {
+      id: 2,
+      name: 'Sunshine Special',
+      price: 34.99,
+      description: 'Limited release sunshine design on premium black cotton',
+      image: sunshine
+    },
+    {
+      id: 2,
+      name: 'Sunshine Special',
+      price: 34.99,
+      description: 'Limited release sunshine design on premium black cotton',
+      image: sunshine
+    }
+
   ]);
 
   const [regularProducts, setRegularProducts] = useState([
     {
       id: 1,
-      name: 'Italian Ice - Lemon',
-      price: 4.99,
-      description: 'Refreshing lemon-flavored Italian ice, perfect for hot summer days',
-      image: 'https://images.unsplash.com/photo-1558234469-50fc184d1cc9?w=800&auto=format&fit=crop'
+      name: 'Alien Boy',
+      price: 34.99,
+      description: 'I made this in my Digital imaging class it was really fun',
+      image: alienBoy
     },
     {
       id: 2,
-      name: 'Bubble Tea - Classic Milk Tea',
-      price: 5.99,
+      name: 'InterGalictic Nard Tee Shirt',
+      price: 34.99,
       description: 'Traditional milk tea with chewy tapioca pearls',
-      image: 'https://images.unsplash.com/photo-1558857563-b371033873b8?w=800&auto=format&fit=crop'
+      image: nardintergal
     },
     {
       id: 3,
-      name: 'Premium Green Tea',
-      price: 12.99,
+      name: 'Flame Nard T-Shirt ',
+      price: 32.99,
       description: 'High-quality loose leaf green tea from Japan',
-      image: 'https://images.unsplash.com/photo-1627435601361-ec25f5b1d0e5?w=800&auto=format&fit=crop'
+      image: nardflame
     },
     {
       id: 4,
-      name: 'Mango Freeze Pop',
-      price: 3.99,
+      name: 'Sunshine Nard T-Shirt',
+      price: 34.99,
       description: 'Tropical mango-flavored freeze pop, a refreshing frozen treat',
-      image: 'https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=800&auto=format&fit=crop'
+      image: sunshine
     },
+
     {
       id: 5,
-      name: 'Sparkling Fruit Punch RTD',
-      price: 4.50,
-      description: 'Ready-to-drink sparkling fruit punch with natural flavors',
-      image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=800&auto=format&fit=crop'
-    },
-    {
-      id: 6,
-      name: 'Earl Grey Tea Blend',
-      price: 14.99,
-      description: 'Premium loose leaf Earl Grey tea with bergamot',
-      image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=800&auto=format&fit=crop'
-    },
-    {
-      id: 7,
-      name: 'Watermelon Italian Ice',
-      price: 4.99,
-      description: 'Sweet and refreshing watermelon-flavored Italian ice',
-      image: 'https://images.unsplash.com/photo-1589984662646-e7b2e4962f18?w=800&auto=format&fit=crop'
-    },
-    {
-      id: 8,
-      name: 'Passion Fruit Bubble Tea',
-      price: 6.99,
-      description: 'Tropical passion fruit bubble tea with popping boba',
-      image: 'https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?w=800&auto=format&fit=crop'
-    },
-    {
-      id: 9,
-      name: 'Chamomile Herbal Tea',
-      price: 11.99,
-      description: 'Calming loose leaf chamomile tea for relaxation',
-      image: 'https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?w=800&auto=format&fit=crop'
-    },
-    {
-      id: 10,
-      name: 'Blue Raspberry Freeze Pop',
-      price: 3.99,
-      description: 'Classic blue raspberry freeze pop, a nostalgic favorite',
-      image: 'https://images.unsplash.com/photo-1505252585461-04db1eb84625?w=800&auto=format&fit=crop'
-    },
-    {
-      id: 11,
       name: 'Spiked Heart Pendant',
       price: 24.99,
       description: 'Edgy and stylish spiked heart pendant necklace',
-      image: '/src/assets/spiked-heart.jpg'
+      image: spikedHeart
+    },
+    {
+      id: 5,
+      name: 'Spiked Heart Pendant',
+      price: 24.99,
+      description: 'Edgy and stylish spiked heart pendant necklace',
+      image: spikedHeart
+    },
+    {
+      id: 4,
+      name: 'Sunshine Nard T-Shirt',
+      price: 34.99,
+      description: 'Tropical mango-flavored freeze pop, a refreshing frozen treat',
+      image: sunshine
+    },
+
+    {
+      id: 5,
+      name: 'Spiked Heart Pendant',
+      price: 24.99,
+      description: 'Edgy and stylish spiked heart pendant necklace',
+      image: spikedHeart
+    },
+    {
+      id: 5,
+      name: 'Spiked Heart Pendant',
+      price: 24.99,
+      description: 'Edgy and stylish spiked heart pendant necklace',
+      image: spikedHeart
     }
+
   ]);
 
   return (

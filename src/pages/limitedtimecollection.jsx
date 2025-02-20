@@ -1,27 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { useCart } from "../context/cartcontext"; // Access cart context
+import { useCart } from "../context/cartcontext";
 import "../styles/limitedtimecollection.css";
 
 const LimitedTimeCollectionPage = ({ limitedTimeProducts }) => {
-    const [timeRemaining, setTimeRemaining] = useState(3600); // Example: 1 hour in seconds
-    const { addToCart } = useCart(); // Access addToCart function from context
+    const { addToCart } = useCart();
+    const [timeRemaining, setTimeRemaining] = useState(24 * 60 * 60); // 24 hours in seconds
 
-    // Countdown timer effect
     useEffect(() => {
-        const interval = setInterval(() => {
-            setTimeRemaining((prevTime) => {
-                if (prevTime <= 0) {
-                    clearInterval(interval); // Stop the countdown when time is up
-                    return 0;
-                }
-                return prevTime - 1;
-            });
+        const timer = setInterval(() => {
+            setTimeRemaining((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
         }, 1000);
 
-        return () => clearInterval(interval); // Clean up the interval on unmount
+        return () => clearInterval(timer);
     }, []);
 
-    // Format the remaining time to HH:MM:SS
     const formatTime = (time) => {
         const hours = Math.floor(time / 3600);
         const minutes = Math.floor((time % 3600) / 60);
@@ -31,20 +23,31 @@ const LimitedTimeCollectionPage = ({ limitedTimeProducts }) => {
 
     return (
         <div className="limited-time-collection-page">
-            <h1>Limited Time Collection</h1>
+            <h1 className="page-title">Limited Time Collection</h1>
             <p className="countdown-timer">
                 Time remaining: {formatTime(timeRemaining)}
             </p>
             <div className="product-gallery">
                 {limitedTimeProducts.map((product) => (
                     <div key={product.id} className="product-card">
-                        <img src={product.image} alt={product.name} className="product-image" />
-                        <h3>{product.name}</h3>
-                        <p>{product.description}</p>
-                        <p className="price">${product.price}</p>
-                        <button onClick={() => addToCart(product)} className="add-to-cart-btn">
-                            Add to Cart
-                        </button>
+                        <div className="product-image-container">
+                            <div className="price-tag">${product.price.toFixed(2)}</div>
+                            <img
+                                src={product.image}
+                                alt={product.name}
+                                className="product-image"
+                            />
+                        </div>
+                        <div className="product-info">
+                            <h3 className="product-name">{product.name}</h3>
+                            <p className="product-description">{product.description}</p>
+                            <button
+                                className="add-to-cart-btn"
+                                onClick={() => addToCart(product)}
+                            >
+                                Add to Cart
+                            </button>
+                        </div>
                     </div>
                 ))}
             </div>
