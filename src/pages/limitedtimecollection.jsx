@@ -18,15 +18,30 @@ const LimitedTimeCollectionPage = ({ limitedTimeProducts }) => {
         const hours = Math.floor(time / 3600);
         const minutes = Math.floor((time % 3600) / 60);
         const seconds = time % 60;
-        return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+        return (
+            <div className="countdown-wrapper">
+                <div className="time-unit">
+                    <span>{String(hours).padStart(2, "0")}</span>
+                    <small>HRS</small>
+                </div>
+                <div className="time-unit">
+                    <span>{String(minutes).padStart(2, "0")}</span>
+                    <small>MIN</small>
+                </div>
+                <div className="time-unit">
+                    <span>{String(seconds).padStart(2, "0")}</span>
+                    <small>SEC</small>
+                </div>
+            </div>
+        );
     };
 
     return (
         <div className="limited-time-collection-page">
             <h1 className="page-title">Limited Time Collection</h1>
-            <p className="countdown-timer">
-                Time remaining: {formatTime(timeRemaining)}
-            </p>
+            <div className="countdown-timer">
+                {formatTime(timeRemaining)}
+            </div>
             <div className="product-gallery">
                 {limitedTimeProducts.map((product) => (
                     <div key={product.id} className="product-card">

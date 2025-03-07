@@ -144,3 +144,43 @@
         height: 300px;
     }
 }
+
+/* Add these new styles to your existing CSS */
+.product-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.product-link:hover {
+    opacity: 0.7;
+}
+
+.product-card .add-to-cart-btn {
+    width: calc(100% - 2rem);
+    margin: 1rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Ensure the ripple effect container is properly positioned */
+.product-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ensure the product link doesn't interfere with the button */
+.product-link {
+    flex: 1;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Optional: Add some spacing between the product info and button */
+.product-info {
+    margin-bottom: 0.5rem;
+}

@@ -7,24 +7,26 @@ export const useCart = () => {
 };
 
 const CartProvider = ({ children }) => {
-    const [cartItems, setCartItems] = useState([]);
+    const [cart, setCart] = useState([]);
 
     const addToCart = (product) => {
-        setCartItems((prevCart) => {
-            const existingProduct = prevCart.find((item) => item.id === product.id);
-            if (existingProduct) {
-                return prevCart.map((item) =>
-                    item.id === product.id
-                        ? { ...item, quantity: item.quantity + 1 }
-                        : item
-                );
+        setCart(prevCart => {
+            const existingItemIndex = prevCart.findIndex(
+                item => item.id === product.id && item.selectedSize === product.selectedSize
+            );
+
+            if (existingItemIndex > -1) {
+                const newCart = [...prevCart];
+                newCart[existingItemIndex].quantity += 1;
+                return newCart;
             }
+
             return [...prevCart, { ...product, quantity: 1 }];
         });
     };
 
     return (
-        <CartContext.Provider value={{ cartItems, addToCart }}>
+        <CartContext.Provider value={{ cart, addToCart }}>
             {children}
         </CartContext.Provider>
     );

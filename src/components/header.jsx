@@ -5,7 +5,7 @@ import logo from "../assets/logo.png";
 import "../styles/header.css";
 
 const Header = () => {
-    const { cartItems } = useCart();
+    const { cart } = useCart(); // Change this from cartItems to cart
 
     return (
         <header className="header">
@@ -22,7 +22,7 @@ const Header = () => {
             </div>
             <div className="cart">
                 <Link to="/cartpage">
-                    🛒 <span className="cart-count">{cartItems.length}</span>
+                    🛒 <span className="cart-count">{cart.length}</span>
                 </Link>
             </div>
         </header>

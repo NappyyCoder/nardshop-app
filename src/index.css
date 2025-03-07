@@ -32,6 +32,9 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 main {
@@ -39,8 +42,7 @@ main {
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 1rem;
-  background-color: #ffffff;
+  padding: 0 1rem;
 }
 
 h1 {
@@ -91,4 +93,23 @@ button:focus-visible {
   main {
     max-width: 1800px;
   }
+}
+
+/* Ensure smooth transitions */
+* {
+  transition: all 0.3s ease;
+}
+
+/* Prevent layout shifts */
+html {
+  scroll-behavior: smooth;
+  overflow-y: scroll;
+  /* Always show scrollbar to prevent layout shifts */
+}
+
+/* Optimize images */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }

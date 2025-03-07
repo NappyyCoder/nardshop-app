@@ -1,22 +1,23 @@
 import React from "react";
 import { useCart } from "../context/cartcontext";
+import { Link } from "react-router-dom";
 import "../styles/cartpage.css";
 
 const CartPage = () => {
-    const { cartItems } = useCart();
+    const { cart } = useCart();  // Change from cartItems to cart
 
     // Calculate total price
-    const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
     return (
         <div className="cart-page">
             <h1>Your Cart</h1>
-            {cartItems.length === 0 ? (
+            {cart.length === 0 ? (
                 <p className="empty-cart-message">Your cart is empty.</p>
             ) : (
                 <>
                     <div className="cart-items-list">
-                        {cartItems.map((item) => (
+                        {cart.map((item) => (
                             <div key={item.id} className="cart-item">
                                 <div className="cart-item-image-container">
                                     <img
@@ -43,9 +44,9 @@ const CartPage = () => {
                         <div className="cart-total">
                             <h2>Cart Total: ${total.toFixed(2)}</h2>
                         </div>
-                        <button className="checkout-btn">
+                        <Link to="/checkout" className="checkout-btn">
                             Proceed to Checkout
-                        </button>
+                        </Link>
                     </div>
                 </>
             )}
