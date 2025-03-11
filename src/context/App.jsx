@@ -18,6 +18,14 @@ import alienBoy from '../assets/alien-boy-black-.jpg';
 import nardintergal from '../assets/NARD-INTERGAL-WHITE-TEE.jpg';
 import nardflame from '../assets/NARD-FLAME-PROTO-6.png';
 import sunshine from '../assets/sumshine-black.jpg';
+import braids from '../assets/briads-tee.jpg';
+import ice from '../assets/nard.sunshine-tshirt.jpg';
+import hat from '../assets/Nard-flame-hat.jpg';
+import googles from '../assets/GOOGLES-NARD-COPY.jpeg';
+import lovesick from '../assets/LOVE-SICK-WHITE-TEE.jpg';
+import bag from '../assets/Nard-Heart-TOte.jpg';
+import crop from '../assets/tank-top-spiked-tee.jpg';
+
 
 const MemoizedHeader = memo(Header);
 const MemoizedFooter = memo(Footer);
@@ -40,10 +48,10 @@ function App() {
     },
     {
       id: 2,
-      name: "Alien Boy T-Shirt",
-      description: "Limited Edition Alien Boy Design",
+      name: "LoveSick Tee ",
+      description: "Limited Edition Design",
       price: 29.99,
-      image: alienBoy,
+      image: lovesick,
       sizes: [
         { size: "S", inStock: true },
         { size: "M", inStock: true },
@@ -54,10 +62,10 @@ function App() {
     },
     {
       id: 3,
-      name: "Alien Boy T-Shirt",
+      name: "Spiked Heart Tote Bag ",
       description: "Limited Edition Alien Boy Design",
       price: 29.99,
-      image: alienBoy,
+      image: bag,
       sizes: [
         { size: "S", inStock: true },
         { size: "M", inStock: true },
@@ -68,10 +76,10 @@ function App() {
     },
     {
       id: 4,
-      name: "Alien Boy T-Shirt",
+      name: "Spiked Heart Cropped Tee Shirt ",
       description: "Limited Edition Alien Boy Design",
       price: 29.99,
-      image: alienBoy,
+      image: crop,
       sizes: [
         { size: "S", inStock: true },
         { size: "M", inStock: true },
@@ -197,10 +205,10 @@ function App() {
     },
     {
       id: 6,
-      name: "Sunshine Black Tee",
+      name: "STAMP (TBD)",
       description: "Classic Sunshine Design",
       price: 24.99,
-      image: sunshine,
+      image: braids,
       sizes: [
         { size: "S", inStock: true },
         { size: "M", inStock: true },
@@ -212,10 +220,10 @@ function App() {
 
     {
       id: 7,
-      name: "Sunshine Black Tee",
+      name: " Iced Sunshine Black Tee",
       description: "Classic Sunshine Design",
       price: 24.99,
-      image: sunshine,
+      image: ice,
       sizes: [
         { size: "S", inStock: true },
         { size: "M", inStock: true },
@@ -226,10 +234,10 @@ function App() {
     },
     {
       id: 8,
-      name: "Sunshine Black Tee",
+      name: "Nard Flame Hat",
       description: "Classic Sunshine Design",
       price: 24.99,
-      image: sunshine,
+      image: hat,
       sizes: [
         { size: "S", inStock: true },
         { size: "M", inStock: true },
@@ -240,10 +248,10 @@ function App() {
     },
     {
       id: 8,
-      name: "Sunshine Black Tee",
+      name: "Speed Racer NArd",
       description: "Classic Sunshine Design",
       price: 24.99,
-      image: sunshine,
+      image: googles,
       sizes: [
         { size: "S", inStock: true },
         { size: "M", inStock: true },
