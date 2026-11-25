@@ -197,7 +197,7 @@
     transform: translateX(-50%);
     font-size: 0.7rem;
     white-space: nowrap;
-    color: #ff0000;
+    color: #ffd400;
     opacity: 0;
     transition: opacity 0.3s ease;
 }
@@ -207,7 +207,7 @@
 }
 
 .size-error {
-    color: #ff0000;
+    color: #ffd400;
     font-size: 0.9rem;
     margin-top: 0.5rem;
 }

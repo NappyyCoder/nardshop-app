@@ -10,7 +10,13 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+.vercel
 *.local
+.env
+.env.*
+!.env.example
+wordpress/nard-coming-soon/build
+wordpress/*.zip
 
 # Editor directories and files
 .vscode/*

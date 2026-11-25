@@ -1,0 +1,470 @@
+/* CREATIVE STREETWEAR ENHANCEMENTS - THE ULTIMATE DESIGN SYSTEM */
+
+/* Advanced Animations */
+@keyframes neonPulse {
+  0%, 100% { 
+    text-shadow: 0 0 5px var(--accent-purple), 0 0 10px var(--accent-purple), 0 0 15px var(--accent-purple);
+  }
+  50% { 
+    text-shadow: 0 0 10px var(--accent-purple), 0 0 20px var(--accent-purple), 0 0 30px var(--accent-purple);
+  }
+}
+
+@keyframes glitchEffect {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+@keyframes matrixRain {
+  0% { transform: translateY(-100vh); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+@keyframes holographic {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes streetGlow {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(255, 212, 0, 0.3), 0 0 40px rgba(255, 212, 0, 0.2);
+  }
+  50% { 
+    box-shadow: 0 0 30px rgba(255, 212, 0, 0.5), 0 0 60px rgba(255, 212, 0, 0.3);
+  }
+}
+
+@keyframes cyberpunk {
+  0% { 
+    filter: hue-rotate(0deg) brightness(1);
+    transform: scale(1);
+  }
+  25% { 
+    filter: hue-rotate(90deg) brightness(1.2);
+    transform: scale(1.02);
+  }
+  50% { 
+    filter: hue-rotate(180deg) brightness(1.5);
+    transform: scale(1.05);
+  }
+  75% { 
+    filter: hue-rotate(270deg) brightness(1.2);
+    transform: scale(1.02);
+  }
+  100% { 
+    filter: hue-rotate(360deg) brightness(1);
+    transform: scale(1);
+  }
+}
+
+/* Creative Typography */
+.creative-title {
+  font-family: 'Space Grotesk', monospace;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  background: rgba(255, 212, 0, 0.1);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: holographic 3s ease-in-out infinite;
+  position: relative;
+}
+
+.creative-title::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 212, 0, 0.1);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: holographic 3s ease-in-out infinite reverse;
+  z-index: -1;
+}
+
+/* Glitch Text Effect */
+.glitch-text {
+  position: relative;
+  color: #ffffff;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch-text::before {
+  animation: glitchEffect 0.3s infinite;
+  color: #ff0000;
+  z-index: -1;
+}
+
+.glitch-text::after {
+  animation: glitchEffect 0.3s infinite reverse;
+  color: #00ff00;
+  z-index: -2;
+}
+
+/* Neon Button Effects */
+.neon-button {
+  position: relative;
+  background: transparent;
+  border: 2px solid var(--accent-purple);
+  color: var(--accent-purple);
+  padding: 1rem 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.neon-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 212, 0, 0.1);
+  transition: left 0.5s ease;
+}
+
+.neon-button:hover {
+  color: #000000;
+  background: var(--accent-purple);
+  box-shadow: 0 0 20px var(--accent-purple), 0 0 40px var(--accent-purple);
+  animation: neonPulse 1s infinite;
+}
+
+.neon-button:hover::before {
+  left: 100%;
+}
+
+/* Cyberpunk Cards */
+.cyber-card {
+  position: relative;
+  background: rgba(255, 212, 0, 0.1);
+  border: 1px solid var(--accent-purple);
+  border-radius: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.cyber-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 212, 0, 0.1);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cyber-card:hover {
+  transform: translateY(-10px) rotateX(5deg);
+  box-shadow: 0 20px 40px rgba(255, 212, 0, 0.3);
+  animation: streetGlow 2s infinite;
+}
+
+.cyber-card:hover::before {
+  opacity: 1;
+}
+
+/* Matrix Background Effect */
+.matrix-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.matrix-rain {
+  position: absolute;
+  color: var(--accent-purple);
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.2;
+  animation: matrixRain 3s linear infinite;
+  opacity: 0.3;
+}
+
+/* Holographic Elements */
+.holographic {
+  background: rgba(255, 212, 0, 0.1);
+  background-size: 400% 400%;
+  animation: holographic 3s ease-in-out infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Streetwear Grid with Advanced Effects */
+.streetwear-grid-advanced {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  perspective: 1000px;
+}
+
+.streetwear-card-advanced {
+  position: relative;
+  background: #000000;
+  border: 2px solid var(--accent-purple);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+  transform-style: preserve-3d;
+}
+
+.streetwear-card-advanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 212, 0, 0.1);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.streetwear-card-advanced:hover {
+  transform: translateY(-20px) rotateX(10deg) rotateY(5deg);
+  box-shadow: 0 30px 60px rgba(255, 212, 0, 0.4);
+  animation: cyberpunk 2s infinite;
+}
+
+.streetwear-card-advanced:hover::before {
+  opacity: 1;
+}
+
+/* Advanced Product Gallery */
+.product-gallery-advanced {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  perspective: 1000px;
+}
+
+.product-card-advanced {
+  position: relative;
+  background: #000000;
+  border: 1px solid var(--accent-purple);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  overflow: hidden;
+  transform-style: preserve-3d;
+}
+
+.product-card-advanced::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 212, 0, 0.1);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.product-card-advanced:hover {
+  transform: translateY(-15px) rotateX(5deg);
+  box-shadow: 0 25px 50px rgba(255, 212, 0, 0.3);
+  animation: streetGlow 1.5s infinite;
+}
+
+.product-card-advanced:hover::after {
+  opacity: 1;
+}
+
+/* Cyberpunk Navigation */
+.cyber-nav {
+  position: relative;
+  background: rgba(255, 212, 0, 0.1);
+  border-bottom: 2px solid var(--accent-purple);
+  box-shadow: 0 0 20px rgba(255, 212, 0, 0.3);
+}
+
+.cyber-nav::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(255, 212, 0, 0.1);
+  animation: holographic 2s linear infinite;
+}
+
+/* Advanced Button Styles */
+.cyber-button {
+  position: relative;
+  background: transparent;
+  border: 2px solid var(--accent-purple);
+  color: #ffffff;
+  padding: 1rem 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.cyber-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 212, 0, 0.1);
+  transition: left 0.5s ease;
+}
+
+.cyber-button:hover {
+  color: #000000;
+  background: var(--accent-purple);
+  box-shadow: 0 0 30px var(--accent-purple);
+  animation: neonPulse 1s infinite;
+}
+
+.cyber-button:hover::before {
+  left: 100%;
+}
+
+/* Streetwear Hero Section */
+.hero-advanced {
+  position: relative;
+  min-height: 100vh;
+  background: rgba(255, 212, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-advanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 212, 0, 0.04);
+  animation: holographic 4s ease-in-out infinite;
+}
+
+.hero-title-advanced {
+  font-size: clamp(4rem, 10vw, 8rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  background: rgba(255, 212, 0, 0.1);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: holographic 3s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
+}
+
+/* Advanced Loading Animations */
+.loading-advanced {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+}
+
+.loading-advanced::before,
+.loading-advanced::after {
+  content: '';
+  position: absolute;
+  border: 2px solid var(--accent-purple);
+  border-radius: 50%;
+  animation: cyberpunk 1s linear infinite;
+}
+
+.loading-advanced::before {
+  width: 100px;
+  height: 100px;
+  border-top-color: transparent;
+  animation-duration: 1s;
+}
+
+.loading-advanced::after {
+  width: 60px;
+  height: 60px;
+  top: 20px;
+  left: 20px;
+  border-bottom-color: transparent;
+  animation-duration: 0.5s;
+  animation-direction: reverse;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-title-advanced {
+    font-size: clamp(2rem, 8vw, 4rem);
+  }
+  
+  .cyber-button {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .streetwear-grid-advanced {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* Performance Optimizations */
+.cyber-card,
+.streetwear-card-advanced,
+.product-card-advanced,
+.product-card,
+.add-to-cart-btn,
+.product-image {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -11,46 +11,68 @@
 
 .countdown-timer {
     font-size: 3rem;
-    color: #000000;
+    color: #ffffff;
     text-align: center;
     margin: 0 0 3rem 0;
-    padding: 2rem;
-    background: #f8f8f8;
-    border-top: 2px solid #000000;
-    border-bottom: 2px solid #000000;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg,
+        rgba(6, 78, 59, 0.4) 0%,
+        rgba(30, 100, 140, 0.45) 100%);
+    border-top: 2px solid rgba(255, 212, 0, 0.5);
+    border-bottom: 2px solid rgba(255, 212, 0, 0.6);
     font-weight: 600;
     width: 100%;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 212, 0, 0.2);
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
+    backdrop-filter: blur(20px);
 }
 
 .countdown-timer::before {
     content: "TIME REMAINING";
     font-size: 1rem;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: #666;
+    color: rgba(255, 212, 0, 0.9);
     position: absolute;
-    top: -12px;
+    top: -14px;
     left: 50%;
     transform: translateX(calc(-50% - 20px));
-    /* Offset to match timer position */
+    background: linear-gradient(135deg,
+        rgba(6, 78, 59, 0.95) 0%,
+        rgba(30, 100, 140, 0.95) 100%);
+    padding: 0.5rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 700;
+    font-family: 'Rajdhani', sans-serif;
+    text-shadow: 0 0 20px rgba(255, 212, 0, 0.6);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* Light theme overrides */
+[data-theme="light"] .countdown-timer {
+    background: rgba(248, 248, 248, 0.95);
+    color: #000000;
+    border-top: 2px solid #ffd400;
+    border-bottom: 2px solid #ffd400;
+}
+
+[data-theme="light"] .countdown-timer::before {
+    color: #666;
     background: #fff;
-    padding: 0 1rem;
 }
 
 .countdown-wrapper {
     display: flex;
-    gap: 2rem;
+    gap: 3rem;
     align-items: center;
     justify-content: center;
     margin: 0 auto;
     position: relative;
-    transform: translateX(-20px);
-    /* Move timer to the left */
 }
 
 .time-unit {
@@ -63,30 +85,98 @@
 .time-unit:not(:last-child)::after {
     content: ":";
     position: absolute;
-    right: -1.2rem;
-    top: 50%;
+    right: -1.5rem;
+    top: 40%;
     transform: translateY(-50%);
-    font-size: 2rem;
+    font-size: 3rem;
+    color: rgba(255, 212, 0, 0.8) !important;
+    font-weight: 900;
+    z-index: 10;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-shadow: 
+        0 0 30px rgba(255, 212, 0, 0.8),
+        0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+[data-theme="light"] .time-unit:not(:last-child)::after {
+    color: #000000 !important;
 }
 
 .time-unit span {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 80px;
-    height: 80px;
-    background: #ffffff;
-    border: 2px solid #000000;
-    border-radius: 8px;
+    min-width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg,
+        rgba(6, 78, 59, 0.9) 0%,
+        rgba(30, 100, 140, 0.95) 100%);
+    border: 3px solid rgba(255, 212, 0, 0.6);
+    border-radius: 12px;
     padding: 0.5rem;
+    color: #ffffff !important;
+    font-size: 4rem;
+    font-weight: 900;
+    position: relative;
+    z-index: 10;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.6),
+        0 0 40px rgba(255, 212, 0, 0.3),
+        inset 0 2px 20px rgba(255, 212, 0, 0.2);
+    text-shadow: 
+        0 0 30px rgba(255, 212, 0, 0.8),
+        0 2px 8px rgba(0, 0, 0, 0.9);
+    transition: all 0.3s ease;
+}
+
+.time-unit span:hover {
+    transform: scale(1.05);
+    border-color: rgba(255, 212, 0, 0.8);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.8),
+        0 0 60px rgba(255, 212, 0, 0.5),
+        inset 0 2px 25px rgba(255, 212, 0, 0.3);
 }
 
 .time-unit small {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #666;
-    letter-spacing: 0.1em;
-    margin-top: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: rgba(255, 212, 0, 1) !important;
+    letter-spacing: 0.3em;
+    margin-top: 0.75rem;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 10;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Rajdhani', sans-serif;
+    text-shadow: 0 0 20px rgba(255, 212, 0, 0.6);
+}
+
+/* Light theme - Black text on white background */
+[data-theme="light"] .time-unit span {
+    background: #ffffff;
+    color: #000000 !important;
+    border-color: #ffd400;
+    box-shadow: 0 4px 12px rgba(255, 212, 0, 0.3);
+}
+
+[data-theme="light"] .time-unit small {
+    color: #000000 !important;
+}
+
+[data-theme="light"] .countdown-timer::before {
+    color: #000000;
+    background: #fff;
+    font-weight: 700;
+}
+
+[data-theme="light"] .time-unit:not(:last-child)::after {
+    color: #000000;
+    font-weight: 700;
 }
 
 @media (max-width: 768px) {
@@ -170,6 +260,15 @@
     flex-direction: column;
     background: transparent;
     cursor: pointer;
+    height: 100%;
+}
+
+.product-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .product-card:hover {
@@ -212,6 +311,9 @@
 .product-info {
     padding-top: 0.5rem;
     text-align: left;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .product-name {
@@ -231,27 +333,49 @@
 }
 
 .add-to-cart-btn {
-    margin-top: 0.4rem;
-    background: transparent;
-    color: #000;
-    border: 1px solid #000;
+    margin-top: auto;
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 2px solid var(--accent-purple);
     padding: 0.8rem 1.5rem;
     font-size: 0.8rem;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     cursor: pointer;
     transition: all 0.3s ease;
     width: 100%;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.add-to-cart-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 212, 0, 0.1);
+    transition: left 0.3s ease;
+    z-index: -1;
 }
 
 .add-to-cart-btn:hover {
-    background: #000;
-    color: #fff;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 212, 0, 0.4);
+}
+
+.add-to-cart-btn:hover::before {
+    left: 0;
 }
 
 /* Hide description by default */
 .product-description {
     display: none;
+    flex-grow: 1;
 }
 
 /* Responsive adjustments */

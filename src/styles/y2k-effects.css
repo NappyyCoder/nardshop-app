@@ -1,0 +1,225 @@
+/* ========================================
+   SPRING-INSPIRED Y2K EFFECTS 🌿
+   Soft, organic animations
+   ======================================== */
+
+@import './spring-animations.css';
+
+/* Chrome & Metallic Effects - Gentle Shine */
+
+@keyframes chromeShine {
+    0% {
+        background-position: -200% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
+@keyframes metallicFlow {
+    0%, 100% {
+        background-position: 0% 50%;
+        filter: brightness(1) contrast(1.1);
+    }
+    50% {
+        background-position: 100% 50%;
+        filter: brightness(1.2) contrast(1.2);
+    }
+}
+
+.chrome-text {
+    color: #ffd400;
+    font-family: 'Unbounded', 'Outfit', sans-serif;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+    filter: drop-shadow(0 5px 20px rgba(0, 0, 0, 1));
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    opacity: 1;
+    -webkit-text-stroke: 0;
+}
+
+.metallic-surface {
+    background: #7a7a7a;
+    border: 1px solid #b0b0b0;
+}
+
+/* Soft neon pulse - spring-inspired */
+@keyframes neonPulse {
+    0%, 100% {
+        text-shadow:
+            0 0 4px #ffd400,
+            0 0 8px #ffd400,
+            0 0 12px #ffd400;
+        filter: brightness(1);
+    }
+    50% {
+        text-shadow:
+            0 0 6px #ffd400,
+            0 0 12px #ffd400,
+            0 0 18px #ffd400;
+        filter: brightness(1.1);
+    }
+}
+
+.neon-text {
+    color: #ffffff;
+    text-shadow:
+        0 0 4px #ffd400,
+        0 0 8px #ffd400,
+        0 0 12px #ffd400;
+    animation: neonPulse 3s ease-in-out infinite alternate;
+}
+
+.neon-border {
+    border: 2px solid #ffd400;
+    box-shadow:
+        0 0 4px #ffd400,
+        0 0 8px rgba(255, 212, 0, 0.5),
+        inset 0 0 4px rgba(255, 212, 0, 0.2);
+    transition: all var(--spring-duration-fast) var(--spring-ease-gentle);
+}
+
+.neon-border:hover {
+    box-shadow:
+        0 0 8px #ffd400,
+        0 0 16px rgba(255, 212, 0, 0.6),
+        inset 0 0 8px rgba(255, 212, 0, 0.3);
+}
+
+.neon-box {
+    background: rgba(255, 212, 0, 0.08);
+    border: 2px solid #ffd400;
+    box-shadow:
+        0 0 8px rgba(255, 212, 0, 0.3),
+        0 0 16px rgba(255, 212, 0, 0.2),
+        inset 0 0 8px rgba(255, 212, 0, 0.1);
+    position: relative;
+    transition: all var(--spring-duration-fast) var(--spring-ease-gentle);
+}
+
+.neon-box:hover {
+    background: rgba(255, 212, 0, 0.12);
+    box-shadow:
+        0 0 12px rgba(255, 212, 0, 0.4),
+        0 0 24px rgba(255, 212, 0, 0.3),
+        inset 0 0 12px rgba(255, 212, 0, 0.15);
+}
+
+/* Holographic effects - subtle */
+@keyframes holographic {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.holographic {
+    background: #ffd400;
+    border: 1px solid rgba(255, 212, 0, 0.3);
+}
+
+/* Pixel effects */
+.pixelated {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+.pixel-border {
+    border: 3px solid #ffd400;
+}
+
+/* Starburst effects */
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotateReverse {
+    from {
+        transform: rotate(360deg);
+    }
+    to {
+        transform: rotate(0deg);
+    }
+}
+
+.starburst {
+    width: 100px;
+    height: 100px;
+    background: #ffd400;
+    border-radius: 50%;
+    animation: rotate 8s linear infinite;
+    opacity: 0.6;
+}
+
+/* Cursor trail effect */
+.cursor-trail {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: #ffd400;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.2s ease-out;
+}
+
+.cursor-ring {
+    position: fixed;
+    width: 32px;
+    height: 32px;
+    border: 2px solid #ffd400;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.15s ease-out;
+}
+
+/* GPU acceleration */
+.gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .chrome-text,
+    .neon-text {
+        animation-duration: 2s;
+    }
+
+    .starburst {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+/* Accessibility - respect motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .chrome-text,
+    .neon-text,
+    .holographic,
+    .starburst {
+        animation: none !important;
+    }
+    
+    .metallic-surface {
+        animation: none !important;
+        background: #4a4a4a;
+    }
+}

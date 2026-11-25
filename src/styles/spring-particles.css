@@ -1,0 +1,295 @@
+/* ========================================
+   SPRING PARTICLE SYSTEM 🌸
+   Organic, sophisticated, draws eye naturally
+   ======================================== */
+
+/* Main title organic breathing with depth */
+@keyframes springBreath {
+    0%, 100% {
+        transform: scale(1) translateY(0) translateZ(0);
+        filter: 
+            drop-shadow(0 0 25px rgba(255, 212, 0, 0.5))
+            drop-shadow(0 0 50px rgba(255, 212, 0, 0.3))
+            drop-shadow(0 5px 20px rgba(0, 0, 0, 0.4));
+    }
+    50% {
+        transform: scale(1.02) translateY(-5px) translateZ(10px);
+        filter: 
+            drop-shadow(0 0 35px rgba(255, 212, 0, 0.7))
+            drop-shadow(0 0 70px rgba(255, 212, 0, 0.5))
+            drop-shadow(0 8px 25px rgba(0, 0, 0, 0.5));
+    }
+}
+
+/* Floating spring particles (petals/orbs) */
+@keyframes particleFloat {
+    0% {
+        transform: translateY(0) translateX(0) rotate(0deg) scale(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.7;
+        transform: translateY(-10vh) translateX(5vw) rotate(45deg) scale(1);
+    }
+    50% {
+        opacity: 0.9;
+        transform: translateY(-35vh) translateX(-8vw) rotate(180deg) scale(1.2);
+    }
+    100% {
+        transform: translateY(-70vh) translateX(15vw) rotate(360deg) scale(0.4);
+        opacity: 0;
+    }
+}
+
+/* Particle twinkle/shimmer */
+@keyframes particleTwinkle {
+    0%, 100% {
+        opacity: 0.5;
+        filter: brightness(1);
+    }
+    50% {
+        opacity: 1;
+        filter: brightness(1.5);
+    }
+}
+
+/* Gentle drift animation */
+@keyframes particleDrift {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(20px);
+    }
+}
+
+/* Aurora/wave background effect */
+@keyframes auroraWave {
+    0%, 100% {
+        background-position: 0% 50%;
+        opacity: 0.15;
+    }
+    50% {
+        background-position: 100% 50%;
+        opacity: 0.25;
+    }
+}
+
+/* Apply spring breath to hero title */
+.hero-title-y2k.spring-effect {
+    animation: springBreath 5s ease-in-out infinite;
+    cursor: pointer;
+    transition: all var(--spring-duration-medium) var(--spring-ease-gentle);
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.hero-title-y2k.spring-effect:hover {
+    animation-play-state: paused;
+    transform: scale(1.04) translateY(-8px) translateZ(20px);
+    filter: 
+        drop-shadow(0 0 45px rgba(255, 212, 0, 0.9))
+        drop-shadow(0 0 90px rgba(255, 229, 102, 0.6))
+        drop-shadow(0 12px 40px rgba(0, 0, 0, 0.6));
+}
+
+/* Bubble container */
+.bubble-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Individual bubble styles */
+.bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 212, 0, 0.3);
+    backdrop-filter: blur(2px);
+    box-shadow: 
+        inset 0 0 20px rgba(255, 255, 255, 0.5),
+        0 0 20px rgba(255, 212, 0, 0.3);
+    animation: bubbleFloat linear infinite;
+    will-change: transform, opacity;
+}
+
+/* Bubble shimmer overlay */
+.bubble::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 40%;
+    height: 40%;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    filter: blur(8px);
+}
+
+/* Bubble reflection */
+.bubble::after {
+    content: '';
+    position: absolute;
+    bottom: 15%;
+    right: 15%;
+    width: 25%;
+    height: 25%;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    filter: blur(4px);
+}
+
+/* Varying bubble sizes */
+.bubble.small {
+    width: 20px;
+    height: 20px;
+}
+
+.bubble.medium {
+    width: 40px;
+    height: 40px;
+}
+
+.bubble.large {
+    width: 60px;
+    height: 60px;
+}
+
+.bubble.xlarge {
+    width: 80px;
+    height: 80px;
+}
+
+/* Stagger bubble animations */
+.bubble:nth-child(1) { 
+    left: 10%; 
+    animation-delay: 0s; 
+    animation-duration: 8s;
+}
+.bubble:nth-child(2) { 
+    left: 25%; 
+    animation-delay: 1s; 
+    animation-duration: 10s;
+}
+.bubble:nth-child(3) { 
+    left: 40%; 
+    animation-delay: 2s; 
+    animation-duration: 12s;
+}
+.bubble:nth-child(4) { 
+    left: 55%; 
+    animation-delay: 1.5s; 
+    animation-duration: 9s;
+}
+.bubble:nth-child(5) { 
+    left: 70%; 
+    animation-delay: 0.5s; 
+    animation-duration: 11s;
+}
+.bubble:nth-child(6) { 
+    left: 85%; 
+    animation-delay: 2.5s; 
+    animation-duration: 13s;
+}
+.bubble:nth-child(7) { 
+    left: 15%; 
+    animation-delay: 3s; 
+    animation-duration: 10s;
+}
+.bubble:nth-child(8) { 
+    left: 60%; 
+    animation-delay: 1.8s; 
+    animation-duration: 9.5s;
+}
+
+/* Aurora/atmospheric backdrop for title */
+.hero-title-wrapper {
+    position: relative;
+    display: inline-block;
+    transform-style: preserve-3d;
+}
+
+.hero-title-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    left: -25%;
+    width: 150%;
+    height: 180%;
+    border-radius: 50%;
+    background: rgba(255, 212, 0, 0.06);
+    animation: auroraWave 8s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1;
+    filter: blur(40px);
+}
+
+/* Subtle depth layers */
+.hero-title-wrapper::after {
+    content: '';
+    position: absolute;
+    top: -20%;
+    left: -15%;
+    width: 130%;
+    height: 140%;
+    border-radius: 50%;
+    background: rgba(255, 229, 102, 0.04);
+    animation: auroraWave 10s ease-in-out infinite reverse;
+    pointer-events: none;
+    z-index: -2;
+    filter: blur(60px);
+}
+
+/* Interactive bubble pop on click */
+.bubble.popping {
+    animation: bubblePop 0.5s var(--spring-ease-bounce) forwards;
+}
+
+/* Accessibility - respect motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .hero-title-y2k.spring-effect,
+    .spring-particle,
+    .hero-title-wrapper::before,
+    .hero-title-wrapper::after {
+        animation: none !important;
+    }
+    
+    .hero-title-y2k.spring-effect:hover {
+        transform: scale(1.02);
+        filter: drop-shadow(0 0 30px rgba(255, 212, 0, 0.7));
+    }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    .spring-particle {
+        animation-duration: 10s, 2s !important;
+    }
+    
+    .spring-particle.large {
+        display: none;
+    }
+    
+    .hero-title-y2k.spring-effect {
+        animation-duration: 6s;
+    }
+    
+    .hero-title-wrapper::before,
+    .hero-title-wrapper::after {
+        filter: blur(30px);
+    }
+}
+
+/* Performance optimizations */
+.spring-particle,
+.hero-title-wrapper::before,
+.hero-title-wrapper::after {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}

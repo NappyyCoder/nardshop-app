@@ -1,4 +1,6 @@
-/* ProductGallery.css */
+/* ProductGallery.css - Spring Animation System */
+@import './spring-animations.css';
+
 .page-title {
     text-align: center;
     margin: 3rem 0;
@@ -22,91 +24,223 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    background: transparent;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
     cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    height: 100%;
+}
+
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(255, 212, 0, 0.08) 0%, 
+        rgba(255, 212, 0, 0.12) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 0;
 }
 
 .product-card:hover {
-    opacity: 0.7;
+    transform: translateY(-12px);
+    box-shadow: 
+        0 25px 50px rgba(255, 212, 0, 0.25),
+        0 10px 20px rgba(255, 212, 0, 0.15),
+        0 5px 10px rgba(0, 0, 0, 0.15);
+    border-color: rgba(255, 212, 0, 0.5);
+}
+
+.product-card:hover::before {
+    opacity: 1;
 }
 
 .product-image-container {
     position: relative;
     width: 100%;
     height: 400px;
-    /* Fixed height instead of padding-top */
     overflow: hidden;
-    background: #f8f8f8;
+    background: var(--bg-tertiary);
 }
 
 .product-image {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease;
+    transition: transform var(--spring-duration-normal) var(--spring-ease-settle),
+        filter var(--spring-duration-fast) ease;
+    filter: brightness(1);
 }
 
 .product-card:hover .product-image {
-    transform: scale(1.05);
+    transform: scale(1.04);
+    filter: brightness(1.05);
 }
 
 .price-tag {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 5px 10px;
-    font-size: 0.9rem;
-    font-weight: 500;
+    top: 1rem;
+    right: 1rem;
+    background: var(--accent-spring-green);
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 700;
     z-index: 2;
+    border: 2px solid #ffffff;
+    transition: all var(--spring-duration-fast) var(--spring-ease-gentle);
+}
+
+.product-card:hover .price-tag {
+    transform: scale(1.08) rotate(-3deg) translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 212, 0, 0.5);
 }
 
 .product-info {
-    padding-top: 0.5rem;
+    padding: 1rem;
     text-align: left;
+    position: relative;
+    z-index: 1;
+    transition: all var(--spring-duration-fast) var(--spring-ease-gentle);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.product-card:hover .product-info {
+    transform: translateY(-3px);
 }
 
 .product-name {
     font-size: 0.9rem;
-    font-weight: 400;
-    color: #000;
+    font-weight: 700;
+    color: var(--text-primary);
     margin: 0;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    transition: color 0.3s ease;
+}
+
+.product-card:hover .product-name {
+    color: var(--accent-spring-green);
 }
 
 .product-price {
     font-size: 0.9rem;
-    color: #000;
+    color: var(--accent-spring-green);
     margin-top: 0.3rem;
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .add-to-cart-btn {
     margin-top: 0.4rem;
-    background: transparent;
-    color: #000;
-    border: 1px solid #000;
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 2px solid var(--accent-spring-green);
     padding: 0.8rem 1.5rem;
     font-size: 0.8rem;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all var(--spring-duration-fast) var(--spring-ease-gentle);
     width: 100%;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    z-index: 1;
+}
+
+.add-to-cart-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 212, 0, 0.1);
+    transition: left var(--spring-duration-fast) var(--spring-ease-settle);
+    z-index: -1;
 }
 
 .add-to-cart-btn:hover {
-    background: #000;
-    color: #fff;
+    color: #ffffff !important;
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 6px 20px rgba(255, 212, 0, 0.3);
 }
 
-/* Hide description by default */
+.add-to-cart-btn:active {
+    transform: translateY(-1px) scale(0.99);
+    transition-duration: var(--spring-duration-instant);
+}
+
+.add-to-cart-btn:hover::before {
+    left: 0;
+}
+
+/* Product description styling */
 .product-description {
-    display: none;
+    color: #a0a0a0;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin: 0.5rem 0;
+    flex-grow: 1;
+    min-height: 3em;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+/* Spring-style ripple effect */
+.spring-ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 212, 0, 0.1);
+    transform: scale(0);
+    animation: springRipple 600ms var(--spring-ease-soft);
+    pointer-events: none;
+}
+
+@keyframes springRipple {
+    to {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+}
+
+/* Legacy ripple (keeping for backwards compatibility) */
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(135deg, 
+        rgba(255, 212, 0, 0.5) 0%, 
+        rgba(255, 212, 0, 0.7) 100%);
+    transform: scale(0);
+    animation: ripple-animation 600ms ease-out;
+    pointer-events: none;
+}
+
+@keyframes ripple-animation {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Success state for add to cart button */
+.add-to-cart-btn.success,
+.streetwear-btn.success {
+    background: var(--accent-purple) !important;
+    color: #ffffff !important;
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(255, 212, 0, 0.8) !important;
 }
 
 /* Responsive adjustments */
@@ -145,42 +279,225 @@
     }
 }
 
-/* Add these new styles to your existing CSS */
+/* Product link styling */
 .product-link {
     text-decoration: none;
     color: inherit;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
-.product-link:hover {
-    opacity: 0.7;
+/* Product overlay effect */
+.product-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 212, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--spring-duration-normal) var(--spring-ease-settle);
+    z-index: 2;
 }
 
-.product-card .add-to-cart-btn {
-    width: calc(100% - 2rem);
-    margin: 1rem;
-    padding: 0.8rem 1.5rem;
+.product-card:hover .product-overlay {
+    opacity: 1;
+}
+
+.view-product {
+    color: #ffffff;
+    font-weight: 700;
     font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 1rem 2rem;
+    border: 2px solid #ffffff;
+    background: transparent;
+    transition: all var(--spring-duration-fast) var(--spring-ease-bounce);
+    transform: translateY(8px) scale(0.95);
+    opacity: 0;
+}
+
+.product-card:hover .view-product {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    transition-delay: 50ms;
+}
+
+.view-product:hover {
+    background: #ffffff;
+    color: var(--accent-spring-green);
+    transform: scale(1.08) translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
+}
+
+/* ==================== PRODUCT IMAGE GALLERY ==================== */
+
+.product-image-gallery {
     position: relative;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
 }
 
-/* Ensure the ripple effect container is properly positioned */
-.product-card {
-    position: relative;
+/* Gallery Navigation Arrows */
+.gallery-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    color: #000000;
+    border: none;
+    width: 40px;
+    height: 40px;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 700;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Ensure the product link doesn't interfere with the button */
-.product-link {
-    flex: 1;
-    display: block;
-    text-decoration: none;
-    color: inherit;
+.gallery-nav:hover {
+    background: rgba(255, 212, 0, 0.95);
+    color: #ffffff;
+    transform: translateY(-50%) scale(1.1);
 }
 
-/* Optional: Add some spacing between the product info and button */
-.product-info {
-    margin-bottom: 0.5rem;
+.gallery-nav-prev {
+    left: 10px;
+}
+
+.gallery-nav-next {
+    right: 10px;
+}
+
+/* Show navigation on hover */
+.product-image-gallery:hover .gallery-nav {
+    opacity: 1;
+}
+
+/* Gallery Thumbnails */
+.gallery-thumbnails {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-image-gallery:hover .gallery-thumbnails {
+    opacity: 1;
+}
+
+.gallery-thumbnail {
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: transparent;
+    padding: 0;
+}
+
+.gallery-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.gallery-thumbnail:hover {
+    border-color: rgba(255, 212, 0, 0.8);
+    transform: scale(1.1);
+}
+
+.gallery-thumbnail.active {
+    border-color: #ffd400;
+    box-shadow: 0 0 10px rgba(255, 212, 0, 0.6);
+}
+
+/* Image Counter */
+.gallery-counter {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #ffffff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-image-gallery:hover .gallery-counter {
+    opacity: 1;
+}
+
+/* Mobile Responsiveness for Gallery */
+@media (max-width: 768px) {
+    .gallery-nav {
+        width: 35px;
+        height: 35px;
+        font-size: 1.5rem;
+        opacity: 0.8;
+    }
+
+    .gallery-thumbnails {
+        opacity: 1;
+        bottom: 5px;
+        gap: 6px;
+        padding: 6px 10px;
+    }
+
+    .gallery-thumbnail {
+        width: 30px;
+        height: 30px;
+    }
+
+    .gallery-counter {
+        opacity: 1;
+        font-size: 0.75rem;
+        padding: 4px 8px;
+    }
+}
+
+/* Accessibility */
+.gallery-nav:focus,
+.gallery-thumbnail:focus {
+    outline: 2px solid #ffd400;
+    outline-offset: 2px;
+}
+
+/* Prevent image dragging */
+.product-image-gallery img {
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* Apply Unbounded font to all green text in products */
+.product-card .product-price,
+.add-to-cart-btn {
+    font-family: 'Unbounded', 'Outfit', sans-serif !important;
 }

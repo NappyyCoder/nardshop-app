@@ -89,7 +89,7 @@ const PrivacyPolicy = () => {
                         If you have any questions about this Privacy Policy, please contact us at:
                     </p>
                     <div className="contact-info">
-                        <p>Email: privacy@nardshop.com</p>
+                        <p>Email: info@nardshop.com</p>
                         <p>Phone: (555) 123-4567</p>
                         <p>Address: 123 Fashion Street, New York, NY 10001</p>
                     </div>

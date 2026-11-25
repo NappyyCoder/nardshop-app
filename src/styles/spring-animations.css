@@ -1,0 +1,341 @@
+/* ========================================
+   SPRING ANIMATION SYSTEM 🌿
+   Soft, organic, playful animations
+   ======================================== */
+
+:root {
+    /* Spring Animation Timings */
+    --spring-duration-instant: 150ms;
+    --spring-duration-fast: 250ms;
+    --spring-duration-normal: 350ms;
+    --spring-duration-slow: 450ms;
+
+    /* Spring Easing Curves */
+    --spring-ease-gentle: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --spring-ease-soft: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --spring-ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+    --spring-ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    /* Spring Colors for Animations */
+    --spring-glow: rgba(255, 212, 0, 0.3);
+    --spring-shadow: rgba(255, 212, 0, 0.15);
+}
+
+/* ========================================
+   GENTLE FADE IN - Elements appearing
+   ======================================== */
+
+@keyframes springFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes springFadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ========================================
+   SOFT SETTLE - Elements landing gently
+   ======================================== */
+
+@keyframes springSettle {
+    0% {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.96);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translateY(2px) scale(1.01);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ========================================
+   SUBTLE BOUNCE - Playful interaction
+   ======================================== */
+
+@keyframes springBounce {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1.02);
+    }
+}
+
+@keyframes springBounceGentle {
+
+    0%,
+    100% {
+        transform: scale(1) translateY(0);
+    }
+
+    50% {
+        transform: scale(1.02) translateY(-2px);
+    }
+}
+
+/* ========================================
+   SPRING GLOW - Soft highlight effect
+   ======================================== */
+
+@keyframes springGlow {
+
+    0%,
+    100% {
+        box-shadow:
+            0 2px 8px var(--spring-shadow),
+            0 0 0 0 var(--spring-glow);
+    }
+
+    50% {
+        box-shadow:
+            0 4px 16px var(--spring-shadow),
+            0 0 20px var(--spring-glow);
+    }
+}
+
+@keyframes springGlowPulse {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 8px rgba(255, 212, 0, 0.3));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 16px rgba(255, 212, 0, 0.5));
+    }
+}
+
+/* ========================================
+   GENTLE SHIMMER - Subtle shine effect
+   ======================================== */
+
+@keyframes springShimmer {
+    0% {
+        background-position: -200% center;
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0.15;
+    }
+
+    100% {
+        background-position: 200% center;
+        opacity: 0;
+    }
+}
+
+/* ========================================
+   SOFT RIPPLE - Button press feedback
+   ======================================== */
+
+.spring-ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 212, 0, 0.1);
+    transform: scale(0);
+    animation: springRipple 600ms var(--spring-ease-soft);
+    pointer-events: none;
+}
+
+@keyframes springRipple {
+    to {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+.animate-spring-in {
+    animation: springFadeIn var(--spring-duration-normal) var(--spring-ease-gentle);
+}
+
+.animate-spring-settle {
+    animation: springSettle var(--spring-duration-normal) var(--spring-ease-settle);
+}
+
+.animate-spring-bounce {
+    animation: springBounceGentle var(--spring-duration-fast) var(--spring-ease-gentle);
+}
+
+/* ========================================
+   HOVER STATES - Soft and bouncy
+   ======================================== */
+
+.spring-hover {
+    transition: all var(--spring-duration-fast) var(--spring-ease-gentle);
+}
+
+.spring-hover:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.12),
+        0 0 20px var(--spring-glow);
+}
+
+.spring-hover:active {
+    transform: translateY(-1px) scale(0.99);
+    transition-duration: var(--spring-duration-instant);
+}
+
+/* ========================================
+   CARD ENTRANCE - Gentle reveal
+   ======================================== */
+
+.spring-card {
+    opacity: 0;
+    animation: springSettle var(--spring-duration-normal) var(--spring-ease-settle) forwards;
+}
+
+.spring-card:nth-child(1) {
+    animation-delay: 0ms;
+}
+
+.spring-card:nth-child(2) {
+    animation-delay: 80ms;
+}
+
+.spring-card:nth-child(3) {
+    animation-delay: 160ms;
+}
+
+.spring-card:nth-child(4) {
+    animation-delay: 240ms;
+}
+
+.spring-card:nth-child(5) {
+    animation-delay: 320ms;
+}
+
+.spring-card:nth-child(6) {
+    animation-delay: 400ms;
+}
+
+/* ========================================
+   BUTTON ANIMATIONS - Soft bounce on hover
+   ======================================== */
+
+.spring-button {
+    position: relative;
+    overflow: hidden;
+    transition: all var(--spring-duration-fast) var(--spring-ease-gentle);
+    transform-origin: center;
+}
+
+.spring-button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 212, 0, 0.1);
+    background-size: 200% 100%;
+    background-position: -200% center;
+    transition: background-position var(--spring-duration-slow) var(--spring-ease-soft);
+}
+
+.spring-button:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 20px var(--spring-shadow);
+}
+
+.spring-button:hover::before {
+    background-position: 200% center;
+    animation: springShimmer 1.2s ease-in-out;
+}
+
+.spring-button:active {
+    transform: translateY(0) scale(0.98);
+    transition-duration: var(--spring-duration-instant);
+}
+
+/* ========================================
+   SCROLL REVEAL - Elements appear on scroll
+   ======================================== */
+
+.spring-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+        opacity var(--spring-duration-normal) var(--spring-ease-settle),
+        transform var(--spring-duration-normal) var(--spring-ease-settle);
+}
+
+.spring-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ========================================
+   ACCESSIBILITY - Respect motion preferences
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .spring-card,
+    .spring-reveal {
+        opacity: 1;
+        transform: none;
+        animation: none;
+    }
+
+    .spring-hover:hover,
+    .spring-button:hover {
+        transform: none;
+    }
+}
+
+/* ========================================
+   PERFORMANCE OPTIMIZATIONS
+   ======================================== */
+
+.spring-card,
+.spring-button,
+.spring-hover {
+    will-change: transform;
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Remove will-change after animation completes */
+.spring-card.loaded,
+.spring-reveal.visible {
+    will-change: auto;
+}

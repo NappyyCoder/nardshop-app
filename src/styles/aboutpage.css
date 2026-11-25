@@ -1,41 +1,109 @@
-/* AboutPage.css */
+/* AboutPage.css - Streetwear Theme */
 .about-page {
-    padding: 3rem 4rem;
+    padding: 4rem 2rem;
     max-width: 1200px;
     margin: 0 auto;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: var(--bg-primary);
+    min-height: 60vh;
+    animation: fadeIn 0.5s ease-out;
 }
 
 .about-page h1 {
     text-align: center;
-    font-size: 3rem;
-    margin-bottom: 2rem;
-    color: #333;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    margin-bottom: 3rem;
+    color: var(--text-primary);
+    font-weight: 800;
+    font-family: 'Space Grotesk', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    background: rgba(255, 212, 0, 0.1);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s ease-in-out infinite;
 }
 
 .about-page p {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     line-height: 1.8;
-    color: #555;
+    color: var(--text-secondary);
     margin-bottom: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+.about-page p:hover {
+    color: var(--text-primary);
 }
 
 .about-page h2 {
-    font-size: 2rem;
-    margin: 2rem 0 1rem;
-    color: #333;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    margin: 3rem 0 1.5rem;
+    color: #ffd400;
+    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid #ffd400;
+    padding-bottom: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.about-page h2:hover {
+    transform: translateX(10px);
+    border-color: #ffd400;
+    color: #ffd400;
 }
 
 .about-page ul {
-    list-style-type: disc;
-    margin: 1rem 0 1rem 2rem;
+    list-style-type: none;
+    margin: 1rem 0 1rem 0;
+    padding-left: 0;
 }
 
 .about-page ul li {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     margin-bottom: 1rem;
-    color: #555;
+    color: var(--text-secondary);
     line-height: 1.6;
+    padding-left: 2rem;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.about-page ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: #ffd400;
+    font-weight: 700;
+    font-size: 1.3rem;
+}
+
+.about-page ul li:hover {
+    color: var(--text-primary);
+    transform: translateX(10px);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+@media (max-width: 768px) {
+    .about-page {
+        padding: 2rem 1rem;
+    }
 }

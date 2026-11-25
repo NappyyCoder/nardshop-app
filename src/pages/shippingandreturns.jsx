@@ -31,14 +31,14 @@ const ShippingReturnsPage = () => {
                     <li>Refunds will be issued to the original payment method.</li>
                     <li>Return shipping costs are the responsibility of the customer.</li>
                 </ul>
-                <p>To initiate a return, please contact our customer service team at support@nardshop.com.</p>
+                <p>To initiate a return, please contact our customer service team at info@nardshop.com.</p>
             </section>
 
             <section className="contact">
                 <h2>Contact Us</h2>
                 <p>If you have any questions or need further assistance, feel free to reach out to us:</p>
                 <ul>
-                    <li>Email: support@nardshop.com</li>
+                    <li>Email: info@nardshop.com</li>
                     <li>Phone: (555) 123-4567</li>
                 </ul>
             </section>

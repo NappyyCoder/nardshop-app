@@ -53,7 +53,7 @@ const ContactPage = () => {
                     </div>
                     <div className="info-item">
                         <h3>✉️ Email</h3>
-                        <p>support@nardshop.com</p>
+                        <p>info@nardshop.com</p>
                     </div>
                 </div>
 

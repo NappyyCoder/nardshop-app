@@ -1,9 +1,13 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import CartProvider from "./cartcontext";
+import { ThemeProvider } from './ThemeContext';
 import Header from '../components/header';
 import Footer from '../components/footer';
-import Home from '../pages/home';
+import Preloader from '../components/Preloader';
+import ThemeToggle from '../components/ThemeToggle';
+import ComingSoon from '../pages/ComingSoon';
+import Y2KHome from '../pages/Y2KHome';
 import CartPage from "../pages/cartpage";
 import LimitedTimeCollectionPage from '../pages/limitedtimecollection';
 import ShippingReturnsPage from '../pages/shippingandreturns';
@@ -13,295 +17,68 @@ import CheckoutPage from '../pages/checkoutpage';
 import OrderSuccessPage from '../pages/ordersuccess';
 import ContactPage from '../pages/contact';
 import PrivacyPolicy from '../pages/privacy';
-import spikedHeart from '../assets/spiked-heart-t.jpg';
-import alienBoy from '../assets/alien-boy-black-.jpg';
-import nardintergal from '../assets/NARD-INTERGAL-WHITE-TEE.jpg';
-import nardflame from '../assets/NARD-FLAME-PROTO-6.png';
-import sunshine from '../assets/sumshine-black.jpg';
-import braids from '../assets/briads-tee.jpg';
-import ice from '../assets/nard.sunshine-tshirt.jpg';
-import hat from '../assets/Nard-flame-hat.jpg';
-import googles from '../assets/GOOGLES-NARD-COPY.jpeg';
-import lovesick from '../assets/LOVE-SICK-WHITE-TEE.jpg';
-import bag from '../assets/Nard-Heart-TOte.jpg';
-import crop from '../assets/tank-top-spiked-tee.jpg';
-
+import PlaytestPage from '../pages/Playtest';
+import useWordPressProducts from '../hooks/useWordPressProducts';
 
 const MemoizedHeader = memo(Header);
 const MemoizedFooter = memo(Footer);
 
-function App() {
-  const [limitedTimeProducts] = useState([
-    {
-      id: 1,
-      name: "Spiked Heart T-Shirt",
-      description: "Limited Edition Spiked Heart Design",
-      price: 29.99,
-      image: spikedHeart,
-      sizes: [
-        { size: "S", inStock: true },
-        { size: "M", inStock: true },
-        { size: "L", inStock: true },
-        { size: "XL", inStock: true },
-        { size: "2XL", inStock: false }
-      ]
-    },
-    {
-      id: 2,
-      name: "LoveSick Tee ",
-      description: "Limited Edition Design",
-      price: 29.99,
-      image: lovesick,
-      sizes: [
-        { size: "S", inStock: true },
-        { size: "M", inStock: true },
-        { size: "L", inStock: true },
-        { size: "XL", inStock: true },
-        { size: "2XL", inStock: true }
-      ]
-    },
-    {
-      id: 3,
-      name: "Spiked Heart Tote Bag ",
-      description: "Limited Edition Alien Boy Design",
-      price: 29.99,
-      image: bag,
-      sizes: [
-        { size: "S", inStock: true },
-        { size: "M", inStock: true },
-        { size: "L", inStock: true },
-        { size: "XL", inStock: true },
-        { size: "2XL", inStock: true }
-      ]
-    },
-    {
-      id: 4,
-      name: "Spiked Heart Cropped Tee Shirt ",
-      description: "Limited Edition Alien Boy Design",
-      price: 29.99,
-      image: crop,
-      sizes: [
-        { size: "S", inStock: true },
-        { size: "M", inStock: true },
-        { size: "L", inStock: true },
-        { size: "XL", inStock: true },
-        { size: "2XL", inStock: true }
-      ]
-    },
-    {
-      id: 5,
-      name: "Alien Boy T-Shirt",
-      description: "Limited Edition Alien Boy Design",
-      price: 29.99,
-      image: alienBoy,
-      sizes: [
-        { size: "S", inStock: true },
-        { size: "M", inStock: true },
-        { size: "L", inStock: true },
-        { size: "XL", inStock: true },
-        { size: "2XL", inStock: true }
-      ]
-    },
-    {
-      id: 6,
-      name: "Alien Boy T-Shirt",
-      description: "Limited Edition Alien Boy Design",
-      price: 29.99,
-      image: alienBoy,
-      sizes: [
-        { size: "S", inStock: true },
-        { size: "M", inStock: true },
-        { size: "L", inStock: true },
-        { size: "XL", inStock: true },
-        { size: "2XL", inStock: true }
-      ]
-    },
-    {
-      id: 7,
-      name: "Alien Boy T-Shirt",
-      description: "Limited Edition Alien Boy Design",
-      price: 29.99,
-      image: alienBoy,
-      sizes: [
-        { size: "S", inStock: true },
-        { size: "M", inStock: true },
-        { size: "L", inStock: true },
-        { size: "XL", inStock: true },
-        { size: "2XL", inStock: true }
-      ]
-    },
-    {
-      id: 8,
-      name: "Alien Boy T-Shirt",
-      description: "Limited Edition Alien Boy Design",
-      price: 29.99,
-      image: alienBoy,
-      sizes: [
-        { size: "S", inStock: true },
-        { size: "M", inStock: true },
-        { size: "L", inStock: true },
-        { size: "XL", inStock: true },
-        { size: "2XL", inStock: true }
-      ]
-    },
-    {
-      id: 9,
-      name: "Alien Boy T-Shirt",
-      description: "Limited Edition Alien Boy Design",
-      price: 29.99,
-      image: alienBoy,
-      sizes: [
-        { size: "S", inStock: true },
-        { size: "M", inStock: true },
-        { size: "L", inStock: true },
-        { size: "XL", inStock: true },
-        { size: "2XL", inStock: true }
-      ]
-    }
-  ]);
+function ShopApp() {
+  const { regularProducts, limitedTimeProducts, loading, error } = useWordPressProducts();
 
-  const [regularProducts] = useState([
-    {
-      id: 3,
-      name: "NARD INTERGAL White Tee",
-      description: "Classic NARD INTERGAL Design",
-      price: 24.99,
-      image: nardintergal,
-      sizes: [
-        { size: "S", inStock: true },
-        { size: "M", inStock: true },
-        { size: "L", inStock: true },
-        { size: "XL", inStock: true },
-        { size: "2XL", inStock: true }
-      ]
-    },
-    {
-      id: 4,
-      name: "NARD FLAME PROTO",
-      description: "Classic NARD FLAME Design",
-      price: 24.99,
-      image: nardflame,
-      sizes: [
-        { size: "S", inStock: true },
-        { size: "M", inStock: true },
-        { size: "L", inStock: true },
-        { size: "XL", inStock: true },
-        { size: "2XL", inStock: true }
-      ]
-    },
-    {
-      id: 5,
-      name: "Sunshine Black Tee",
-      description: "Classic Sunshine Design",
-      price: 24.99,
-      image: sunshine,
-      sizes: [
-        { size: "S", inStock: true },
-        { size: "M", inStock: true },
-        { size: "L", inStock: true },
-        { size: "XL", inStock: true },
-        { size: "2XL", inStock: true }
-      ]
-    },
-    {
-      id: 6,
-      name: "STAMP (TBD)",
-      description: "Classic Sunshine Design",
-      price: 24.99,
-      image: braids,
-      sizes: [
-        { size: "S", inStock: true },
-        { size: "M", inStock: true },
-        { size: "L", inStock: true },
-        { size: "XL", inStock: true },
-        { size: "2XL", inStock: true }
-      ]
-    },
+  // Show preloader while fetching products
+  if (loading) {
+    return <Preloader isLoading={true} />;
+  }
 
-    {
-      id: 7,
-      name: " Iced Sunshine Black Tee",
-      description: "Classic Sunshine Design",
-      price: 24.99,
-      image: ice,
-      sizes: [
-        { size: "S", inStock: true },
-        { size: "M", inStock: true },
-        { size: "L", inStock: true },
-        { size: "XL", inStock: true },
-        { size: "2XL", inStock: true }
-      ]
-    },
-    {
-      id: 8,
-      name: "Nard Flame Hat",
-      description: "Classic Sunshine Design",
-      price: 24.99,
-      image: hat,
-      sizes: [
-        { size: "S", inStock: true },
-        { size: "M", inStock: true },
-        { size: "L", inStock: true },
-        { size: "XL", inStock: true },
-        { size: "2XL", inStock: true }
-      ]
-    },
-    {
-      id: 8,
-      name: "Speed Racer NArd",
-      description: "Classic Sunshine Design",
-      price: 24.99,
-      image: googles,
-      sizes: [
-        { size: "S", inStock: true },
-        { size: "M", inStock: true },
-        { size: "L", inStock: true },
-        { size: "XL", inStock: true },
-        { size: "2XL", inStock: true }
-      ]
-    },
-    {
-      id: 9,
-      name: "Sunshine Black Tee",
-      description: "Classic Sunshine Design",
-      price: 24.99,
-      image: sunshine,
-      sizes: [
-        { size: "S", inStock: true },
-        { size: "M", inStock: true },
-        { size: "L", inStock: true },
-        { size: "XL", inStock: true },
-        { size: "2XL", inStock: true }
-      ]
-    },
-    {
-      id: 10,
-      name: "Sunshine Black Tee",
-      description: "Classic Sunshine Design",
-      price: 24.99,
-      image: sunshine,
-      sizes: [
-        { size: "S", inStock: true },
-        { size: "M", inStock: true },
-        { size: "L", inStock: true },
-        { size: "XL", inStock: true },
-        { size: "2XL", inStock: true }
-      ]
-    }
-
-  ]);
+  // Show error state if products failed to load
+  if (error) {
+    return (
+      <div className="app-container">
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+          fontSize: '18px',
+          textAlign: 'center',
+          padding: '20px'
+        }}>
+          <h2>Unable to load products</h2>
+          <p>Error: {error}</p>
+          <p>Please check your WordPress configuration and try again.</p>
+          <button
+            onClick={() => window.location.reload()}
+            style={{
+              marginTop: '20px',
+              padding: '10px 20px',
+              fontSize: '16px',
+              cursor: 'pointer'
+            }}
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <CartProvider>
-      <Router basename="/nardshop-app">
+    <ThemeProvider>
+      <CartProvider>
         <div className="app-container">
           <MemoizedHeader />
+          <ThemeToggle />
           <main>
             <Routes>
-              <Route path="/" element={<Home regularProducts={regularProducts} />} />
+              <Route path="/shop" element={<Y2KHome regularProducts={regularProducts} />} />
               <Route
                 path="/limited-time-collection"
-                element={<LimitedTimeCollectionPage limitedTimeProducts={limitedTimeProducts} />}
+                element={<LimitedTimeCollectionPage
+                  limitedTimeProducts={limitedTimeProducts}
+                  regularProducts={regularProducts}
+                />}
               />
               <Route
                 path="/product/:productId"
@@ -321,8 +98,23 @@ function App() {
           </main>
           <MemoizedFooter />
         </div>
-      </Router>
-    </CartProvider>
+      </CartProvider>
+    </ThemeProvider>
+  );
+}
+
+const routerBasename = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+function App() {
+  return (
+    <Router basename={routerBasename}>
+      <Routes>
+        <Route path="/" element={<ComingSoon />} />
+        <Route path="/play" element={<PlaytestPage />} />
+        <Route path="/play/:gameId" element={<PlaytestPage />} />
+        <Route path="/*" element={<ShopApp />} />
+      </Routes>
+    </Router>
   );
 }
 

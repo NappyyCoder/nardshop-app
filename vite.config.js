@@ -1,10 +1,12 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
+import noSecrets from './vite-plugin-no-secrets.js'
 
-export default defineConfig({
-  plugins: [react()],
-  base: '/nardshop-app/',
+export default defineConfig(({ command }) => ({
+  plugins: [react(), noSecrets()],
+  // Site root locally and on Vercel. GitHub Pages keeps the /nardshop-app/ subpath.
+  base: command === 'serve' || process.env.VERCEL ? '/' : '/nardshop-app/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
@@ -12,7 +14,22 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    open: true
+    strictPort: false,
+    open: true,
+    host: true,
+    allowedHosts: true,
+    proxy: {
+      '/wp-json': {
+        target: 'https://nardshop.com',
+        changeOrigin: true,
+        secure: true,
+      },
+    },
+  },
+  preview: {
+    port: 3000,
+    host: true,
+    allowedHosts: true,
   },
   build: {
     outDir: 'dist',
@@ -36,4 +53,4 @@ export default defineConfig({
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
   },
-})
+}))
