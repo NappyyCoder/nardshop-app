@@ -1,7 +1,8 @@
 import { memo, useEffect, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 import catMark from '../assets/nard-cat-yellow.png';
 import ScratchTicket from './ScratchTicket';
-import { COUPON_CODE, PRIZE } from './prize';
+import { PRIZE } from './prize';
 
 const TARGET = 0;
 const TARGETS = [TARGET];
@@ -16,10 +17,45 @@ const SLOTS = [
 const SHOW_MS = 4000;
 const SHOW_TICKS = 4;
 const ROUNDS = {
-    1: { show: SHOW_MS, swaps: 4, gap: 480 },
-    2: { show: SHOW_MS, swaps: 6, gap: 360 },
-    3: { show: SHOW_MS, swaps: 8, gap: 240 },
+    1: { show: SHOW_MS, gap: 480 },
+    2: { show: SHOW_MS, gap: 360 },
+    3: { show: SHOW_MS, gap: 240 },
 };
+const PLAY_API = '/api/play';
+// Matches the .pt-match-inner flip transition.
+const FLIP_MS = 360;
+// Beat between the cards landing face down and the first swap.
+const SETTLE_MS = 650;
+const ARC = 0.3;
+
+function moveMs(pace) {
+    return Math.max(160, pace.gap - 50);
+}
+
+function slotPoint(slot) {
+    return { x: slot % 2, y: Math.floor(slot / 2) };
+}
+
+// Two swapping cards bow out to opposite sides so they pass instead of sliding through each other.
+function arcCard(element, fromSlot, toSlot, duration) {
+    if (!element?.animate || !window.CSS?.supports?.('translate', '1px 1px')) return null;
+    const from = slotPoint(fromSlot);
+    const to = slotPoint(toSlot);
+    const dx = to.x - from.x;
+    const dy = to.y - from.y;
+    const length = Math.hypot(dx, dy) || 1;
+    const size = element.offsetWidth * ARC;
+    const x = (-dy / length) * size;
+    const y = (dx / length) * size;
+    return element.animate(
+        [
+            { translate: '0px 0px', easing: 'ease-out' },
+            { translate: `${x.toFixed(1)}px ${y.toFixed(1)}px`, offset: 0.5, easing: 'ease-in' },
+            { translate: '0px 0px' },
+        ],
+        { duration },
+    );
+}
 const STEPS = [
     { id: 1, note: 'Steady' },
     { id: 2, note: 'Faster' },
@@ -33,41 +69,32 @@ const MARKS = {
 
 let audioContext;
 
+function prefersCalm() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
 function calmPace(level) {
     const pace = ROUNDS[level] || ROUNDS[1];
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!reduced) return pace;
+    if (!prefersCalm()) return pace;
     return {
         show: Math.round(pace.show * 1.4),
-        swaps: Math.max(3, pace.swaps - 2),
         gap: Math.round(pace.gap * 1.35),
     };
 }
 
-function shuffledOrder() {
-    const order = [...CARDS];
-    for (let index = order.length - 1; index > 0; index -= 1) {
-        const swap = Math.floor(Math.random() * (index + 1));
-        [order[index], order[swap]] = [order[swap], order[index]];
-    }
-    return order;
-}
-
-function swapPair(order, previousPair) {
-    const targetSlots = [];
-    order.forEach((id, index) => {
-        if (TARGETS.includes(id)) targetSlots.push(index);
+async function callPlay(body) {
+    const response = await fetch(PLAY_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
     });
-    let first = targetSlots[Math.floor(Math.random() * targetSlots.length)];
-    let second = Math.floor(Math.random() * order.length);
-    let guard = 0;
-    while ((second === first || [first, second].sort().join('-') === previousPair) && guard < 6) {
-        second = Math.floor(Math.random() * order.length);
-        guard += 1;
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+        const error = new Error(data.error || 'network');
+        error.code = data.error || 'network';
+        throw error;
     }
-    const next = [...order];
-    [next[first], next[second]] = [next[second], next[first]];
-    return { order: next, pair: [first, second].sort().join('-'), slots: [first, second] };
+    return data;
 }
 
 function wait(ms) {
@@ -100,10 +127,6 @@ function tone(frequency, length, volume = 0.045) {
     gain.gain.exponentialRampToValueAtTime(0.0001, stopAt);
     oscillator.start();
     oscillator.stop(stopAt);
-}
-
-function foundTarget(picked) {
-    return picked.length === 1 && picked[0] === TARGET;
 }
 
 const COURTS = {
@@ -426,8 +449,24 @@ export default function TwinGame() {
     const [moving, setMoving] = useState([]);
     const [ticketOpen, setTicketOpen] = useState(false);
     const [codeSeen, setCodeSeen] = useState(false);
+    const [busy, setBusy] = useState(false);
+    const [notice, setNotice] = useState('');
+    const [coupon, setCoupon] = useState('');
+    const roundTokenRef = useRef('');
+    const progressRef = useRef(null);
+    const swapsRef = useRef([]);
+    const outcomeRef = useRef(null);
+    const cardRefs = useRef({});
+    const boardRef = useRef(null);
+    const [snap, setSnap] = useState(false);
+    const busyRef = useRef(false);
 
     soundRef.current = soundOn;
+
+    function setPending(value) {
+        busyRef.current = value;
+        setBusy(value);
+    }
 
     useEffect(() => {
         if (window.requestIdleCallback) {
@@ -456,39 +495,54 @@ export default function TwinGame() {
             setFaceUp(false);
             if (soundRef.current) tone(220, 0.06, 0.03);
             setPhase('shuffle');
+            await wait(FLIP_MS + SETTLE_MS);
             let current = orderRef.current;
-            let pair = '';
-            for (let step = 0; step < roundPace.swaps; step += 1) {
+            const swaps = swapsRef.current;
+            const duration = moveMs(roundPace);
+            const arcs = !prefersCalm();
+            for (let step = 0; step < swaps.length; step += 1) {
                 if (step > 0) await wait(roundPace.gap);
                 if (cancel) return;
-                const swap = swapPair(current, pair);
-                const moved = swap.slots.map((slot) => current[slot]);
-                current = swap.order;
-                pair = swap.pair;
+                const [a, b] = swaps[step];
+                const moved = [current[a], current[b]];
+                const next = [...current];
+                [next[a], next[b]] = [next[b], next[a]];
+                current = next;
                 orderRef.current = current;
-                setMoving(moved);
-                setOrder([...current]);
+                flushSync(() => {
+                    setMoving(moved);
+                    setOrder(next);
+                });
+                if (arcs) {
+                    running.forEach((animation) => animation.cancel());
+                    running = [
+                        arcCard(cardRefs.current[moved[0]], a, b, duration),
+                        arcCard(cardRefs.current[moved[1]], b, a, duration),
+                    ].filter(Boolean);
+                }
                 if (soundRef.current) tone(280 + step * 20, 0.05, 0.03);
             }
-            await wait(Math.min(320, roundPace.gap));
+            await wait(Math.max(duration, Math.min(320, roundPace.gap)));
             if (cancel) return;
             setMoving([]);
             setPhase('pick');
         };
 
+        let running = [];
         run();
         return () => {
             cancel = true;
+            running.forEach((animation) => animation.cancel());
         };
     }, [token, round]);
 
     useEffect(() => {
         if (phase !== 'reveal') return undefined;
+        const outcome = outcomeRef.current || {};
         const timer = setTimeout(() => {
+            setLives(outcome.lives ?? lives);
             if (!wonRound) {
-                const nextLives = lives - 1;
-                setLives(nextLives);
-                if (nextLives <= 0) {
+                if (outcome.over) {
                     setResult({
                         prize: null,
                         detail: 'No lives left. Back to round 1.',
@@ -500,7 +554,8 @@ export default function TwinGame() {
                 setPhase('retry');
                 return;
             }
-            if (round >= 3) {
+            if (outcome.code) {
+                setCoupon(outcome.code);
                 setResult({
                     prize: PRIZE,
                     detail: 'Three rounds. The gold card. 20% off, available for a limited time.',
@@ -512,16 +567,40 @@ export default function TwinGame() {
             setPhase('next');
         }, 780);
         return () => clearTimeout(timer);
-    }, [phase, wonRound, round, lives]);
+    }, [phase, wonRound, lives]);
 
-    function begin(nextRound) {
+    async function begin() {
+        if (busyRef.current) return;
         unlockAudio();
-        const nextOrder = shuffledOrder();
-        const nextPace = calmPace(nextRound);
-        orderRef.current = nextOrder;
-        setOrder(nextOrder);
-        setRound(nextRound);
-        setPace(nextPace);
+        setPending(true);
+        setNotice('');
+        const flipStart = performance.now();
+        const wasUp = faceUp;
+        if (wasUp) setFaceUp(false);
+        let data;
+        try {
+            data = await callPlay({ action: 'deal', progress: progressRef.current, calm: prefersCalm() });
+        } catch {
+            setPending(false);
+            setNotice('Could not deal the cards. Check your connection and try again.');
+            return;
+        }
+        if (wasUp) await wait(Math.max(0, FLIP_MS - (performance.now() - flipStart)));
+        setPending(false);
+        roundTokenRef.current = data.token;
+        swapsRef.current = data.swaps;
+        outcomeRef.current = null;
+        orderRef.current = data.order;
+        flushSync(() => {
+            setSnap(true);
+            setMoving([]);
+            setOrder(data.order);
+        });
+        void boardRef.current?.offsetWidth;
+        setSnap(false);
+        setRound(data.round);
+        setLives(data.lives);
+        setPace(calmPace(data.round));
         setPicked([]);
         setWonRound(false);
         setResult(null);
@@ -537,14 +616,35 @@ export default function TwinGame() {
     }
 
     function toggle(id) {
-        if (phase !== 'pick') return;
+        if (phase !== 'pick' || busyRef.current) return;
         if (!picked.includes(id) && soundRef.current) tone(660, 0.05);
+        setNotice('');
         setPicked((current) => (current[0] === id ? [] : [id]));
     }
 
-    function lockIn() {
-        if (phase !== 'pick' || picked.length !== 1) return;
-        const won = foundTarget(picked);
+    async function lockIn() {
+        if (phase !== 'pick' || picked.length !== 1 || busyRef.current) return;
+        setPending(true);
+        setNotice('');
+        let data;
+        try {
+            data = await callPlay({ action: 'pick', token: roundTokenRef.current, slot: orderRef.current.indexOf(picked[0]) });
+        } catch (error) {
+            setPending(false);
+            if (error.code === 'expired' || error.code === 'bad-token') {
+                progressRef.current = null;
+                setPicked([]);
+                setNotice('That deal timed out. Deal again to start over.');
+                setPhase('ready');
+                return;
+            }
+            setNotice('Could not check your pick. Tap Lock it in again.');
+            return;
+        }
+        setPending(false);
+        outcomeRef.current = data;
+        progressRef.current = data.progress || null;
+        const won = Boolean(data.correct);
         setWonRound(won);
         setFaceUp(true);
         setPhase('reveal');
@@ -581,8 +681,10 @@ export default function TwinGame() {
     }, []);
 
     function playAgain() {
+        progressRef.current = null;
+        setCoupon('');
         setLives(LIVES);
-        begin(1);
+        begin();
     }
 
     async function copyCode(code) {
@@ -595,7 +697,7 @@ export default function TwinGame() {
     }
 
     const lastLife = lives === 1;
-    const status = {
+    const status = notice || {
         ready: 'Deal the cards. Remember the gold card, then find it.',
         show: lastLife ? 'Last life. Remember the gold card.' : 'Remember the gold card.',
         count: lastLife ? `Last life. Shuffle in ${count}.` : `Shuffle in ${count}.`,
@@ -610,7 +712,9 @@ export default function TwinGame() {
             : (round === 1 ? 'Same cat. Faster shuffle next.' : 'Same cat. Fastest shuffle next.'),
         done: result?.prize ? '20% off is yours. Available for a limited time.' : 'No lives left. Back to round 1.',
     }[phase];
-    const statusTone = (phase === 'reveal' && wonRound) || phase === 'next' || (phase === 'done' && result?.prize)
+    const statusTone = notice
+        ? 'bad'
+        : (phase === 'reveal' && wonRound) || phase === 'next' || (phase === 'done' && result?.prize)
         ? 'good'
         : (phase === 'reveal' && !wonRound) || phase === 'retry' || (phase === 'done' && result && !result.prize)
             ? 'bad'
@@ -620,8 +724,6 @@ export default function TwinGame() {
         || phase === 'retry'
         || phase === 'next'
         || (phase === 'done' && !ticketOpen);
-
-    const coupon = result?.prize ? COUPON_CODE : '';
 
     useEffect(() => {
         if (phase === 'done' && result?.prize) {
@@ -660,7 +762,7 @@ export default function TwinGame() {
                 </button>
             </header>
 
-            {phase === 'ready' ? (
+            {phase === 'ready' && !notice ? (
                 <div className="pt-match-how">
                     <p className="pt-kicker">Black Friday · 20% off</p>
                     <h2>Find the gold card</h2>
@@ -717,7 +819,7 @@ export default function TwinGame() {
                             <b>{count}</b>
                         </div>
                     )}
-                    <div className={`pt-match-board ${moving.length ? 'tracking' : ''}`}>
+                    <div ref={boardRef} className={`pt-match-board ${moving.length ? 'tracking' : ''}`}>
                         {CARDS.map((id) => {
                             const slot = SLOTS[order.indexOf(id)];
                             const selected = picked.includes(id);
@@ -731,12 +833,15 @@ export default function TwinGame() {
                             return (
                                 <button
                                     key={id}
+                                    ref={(element) => {
+                                        cardRefs.current[id] = element;
+                                    }}
                                     type="button"
                                     className={`pt-match-card ${showFront ? 'up' : ''} ${selected ? 'selected' : ''} ${moving.includes(id) ? 'moving' : ''} ${mark}`}
                                     style={{
                                         '--x': slot.x,
                                         '--y': slot.y,
-                                        transitionDuration: `${Math.max(160, pace.gap - 50)}ms`,
+                                        transitionDuration: snap ? '0ms' : `${moveMs(pace)}ms`,
                                     }}
                                     onClick={() => toggle(id)}
                                     disabled={phase !== 'pick'}
@@ -759,28 +864,28 @@ export default function TwinGame() {
                 {showDock && (
                     <div className="pt-match-dock">
                         {phase === 'ready' && (
-                            <button type="button" className="pt-btn" onClick={() => begin(1)}>
-                                Deal the cards
+                            <button type="button" className="pt-btn" onClick={begin} disabled={busy}>
+                                {busy ? 'Dealing…' : 'Deal the cards'}
                             </button>
                         )}
                         {phase === 'pick' && picked.length === 1 && (
-                            <button type="button" className={`pt-btn ${lastLife ? 'pt-btn-last' : ''}`} onClick={lockIn}>
-                                {lastLife ? 'Last life. Lock in' : 'Lock it in'}
+                            <button type="button" className={`pt-btn ${lastLife ? 'pt-btn-last' : ''}`} onClick={lockIn} disabled={busy}>
+                                {busy ? 'Checking…' : lastLife ? 'Last life. Lock in' : 'Lock it in'}
                             </button>
                         )}
                         {phase === 'retry' && (
-                            <button type="button" className={`pt-btn ${lastLife ? 'pt-btn-last' : ''}`} onClick={() => begin(round)}>
-                                {lastLife ? 'Last life. Try this round' : 'Try this round again'}
+                            <button type="button" className={`pt-btn ${lastLife ? 'pt-btn-last' : ''}`} onClick={begin} disabled={busy}>
+                                {busy ? 'Dealing…' : lastLife ? 'Last life. Try this round' : 'Try this round again'}
                             </button>
                         )}
                         {phase === 'next' && (
-                            <button type="button" className="pt-btn" onClick={() => begin(round + 1)}>
-                                {round === 1 ? 'Play round 2' : 'Play the last round'}
+                            <button type="button" className="pt-btn" onClick={begin} disabled={busy}>
+                                {busy ? 'Dealing…' : round === 1 ? 'Play round 2' : 'Play the last round'}
                             </button>
                         )}
                         {phase === 'done' && (
-                            <button type="button" className="pt-btn" onClick={playAgain}>
-                                Play again
+                            <button type="button" className="pt-btn" onClick={playAgain} disabled={busy}>
+                                {busy ? 'Dealing…' : 'Play again'}
                             </button>
                         )}
                         {phase === 'done' && coupon && codeSeen && (

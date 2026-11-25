@@ -1,6 +1,4 @@
-import { useState } from 'react';
-import ScratchTicket from './ScratchTicket';
-import { COUPON_CODE } from './prize';
+import { Link } from 'react-router-dom';
 
 export function GameFrame({ title, note, children }) {
     return (
@@ -12,46 +10,23 @@ export function GameFrame({ title, note, children }) {
     );
 }
 
-export function PrizeResult({ prize, detail, onAgain, againLabel = 'Play again', code }) {
-    const ticketCode = prize ? (code || COUPON_CODE) : '';
-    const [open, setOpen] = useState(Boolean(ticketCode));
-    const [copied, setCopied] = useState(false);
-
-    async function copyCode(value) {
-        try {
-            await navigator.clipboard.writeText(value);
-            setCopied(true);
-        } catch {
-            setCopied(false);
-        }
-    }
-
+export function PrizeResult({ prize, detail, onAgain, againLabel = 'Play again' }) {
     return (
-        <>
-            <div className={`pt-result ${prize ? 'win' : 'miss'}`} role="status">
-                <p className="pt-kicker">{prize ? 'Prize' : 'No prize'}</p>
-                <h3>{prize || 'Try again'}</h3>
-                {detail ? <p>{detail}</p> : null}
-                <div className="pt-result-actions">
-                    {ticketCode && !open && (
-                        <button type="button" className="pt-btn" onClick={() => setOpen(true)}>
-                            See the ticket
-                        </button>
-                    )}
-                    <button type="button" className="pt-btn" onClick={onAgain}>
-                        {againLabel}
-                    </button>
-                </div>
+        <div className={`pt-result ${prize ? 'win' : 'miss'}`} role="status">
+            <p className="pt-kicker">{prize ? 'Prize' : 'No prize'}</p>
+            <h3>{prize || 'Try again'}</h3>
+            {detail ? <p>{detail}</p> : null}
+            {prize ? <p>Claim your 20% code by clearing Find the card.</p> : null}
+            <div className="pt-result-actions">
+                {prize && (
+                    <Link className="pt-btn" to="/play">
+                        Play Find the card
+                    </Link>
+                )}
+                <button type="button" className="pt-btn" onClick={onAgain}>
+                    {againLabel}
+                </button>
             </div>
-            {open && ticketCode && (
-                <ScratchTicket
-                    prize={prize}
-                    code={ticketCode}
-                    copied={copied}
-                    onCopy={copyCode}
-                    onClose={() => setOpen(false)}
-                />
-            )}
-        </>
+        </div>
     );
 }

@@ -1,17 +1,13 @@
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import PlinkoGame from '../playtest/PlinkoGame';
-import ScratchGame from '../playtest/ScratchGame';
-import SlingGame from '../playtest/SlingGame';
-import StackGame from '../playtest/StackGame';
 import TwinGame from '../playtest/TwinGame';
 import '../styles/playtest.css';
 
 const OTHER_GAMES = {
-    plinko: PlinkoGame,
-    stack: StackGame,
-    sling: SlingGame,
-    scratch: ScratchGame,
+    plinko: lazy(() => import('../playtest/PlinkoGame')),
+    stack: lazy(() => import('../playtest/StackGame')),
+    sling: lazy(() => import('../playtest/SlingGame')),
+    scratch: lazy(() => import('../playtest/ScratchGame')),
 };
 
 export default function PlaytestPage() {
@@ -26,7 +22,13 @@ export default function PlaytestPage() {
     return (
         <div className={`playtest ${OtherGame ? '' : 'playtest-match'}`}>
             <div className={`pt-wrap ${OtherGame ? '' : 'pt-wrap-match'}`}>
-                {OtherGame ? <OtherGame key={gameId} /> : <TwinGame />}
+                {OtherGame ? (
+                    <Suspense fallback={null}>
+                        <OtherGame key={gameId} />
+                    </Suspense>
+                ) : (
+                    <TwinGame />
+                )}
             </div>
         </div>
     );

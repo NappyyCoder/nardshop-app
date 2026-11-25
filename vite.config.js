@@ -2,9 +2,10 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import noSecrets from './vite-plugin-no-secrets.js'
+import playApi from './vite-plugin-play-api.js'
 
 export default defineConfig(({ command }) => ({
-  plugins: [react(), noSecrets()],
+  plugins: [react(), noSecrets(), playApi()],
   // Site root locally and on Vercel. GitHub Pages keeps the /nardshop-app/ subpath.
   base: command === 'serve' || process.env.VERCEL ? '/' : '/nardshop-app/',
   resolve: {
